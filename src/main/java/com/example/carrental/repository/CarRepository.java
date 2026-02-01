@@ -11,32 +11,37 @@ import java.util.Objects;
 @Component
 public class CarRepository {
 
-    private final List<Car> cars;
+    private final List<Car> carList;
 
     public CarRepository() {
-        cars = new ArrayList<>();
+        carList = new ArrayList<>();
+        carList.add(new Car(1L, "VAN_235", CarType.VAN));
+        carList.add(new Car(2L, "VAN_278", CarType.VAN));
+        carList.add(new Car(3L, "SUV_344", CarType.SUV));
+        carList.add(new Car(4L, "SUV_235", CarType.SUV));
+        carList.add(new Car(5L, "SED_861", CarType.SEDAN));
     }
 
     public Car getCarById(Long id) {
-        return cars.stream()
+        return carList.stream()
                 .filter(car -> Objects.equals(car.id(), id))
                 .findFirst()
                 .orElse(null);
     }
 
     public Car save(Car car) {
-        Long largestId = cars.stream()
+        Long largestId = carList.stream()
                 .map(Car::id)
                 .max(Long::compareTo)
                 .orElse(0L);
 
         car.setId(largestId + 1);
-        cars.add(car);
+        carList.add(car);
         return car;
     }
 
     public List<Car> getCarsByType(CarType type) {
-        return cars.stream()
+        return carList.stream()
                 .filter(car -> car.type() == type)
                 .toList();
     }
